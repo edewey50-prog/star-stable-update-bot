@@ -1,1 +1,1 @@
-https://www.starstable.com/news
+https://api.starstable.com/article/welcoming-the-westphalian
