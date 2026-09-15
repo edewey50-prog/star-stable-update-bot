@@ -78,7 +78,7 @@ def send_to_discord(update):
     if not WEBHOOK_URL:
         raise RuntimeError("DISCORD_WEBHOOK_URL is not configured.")
 
- payload = {
+    payload = {
     "content": "<@&1549507550377156700> ➶ **NEW STAR STABLE GAME UPDATE!**",
     "allowed_mentions": {
         "roles": ["1549507550377156700"]
