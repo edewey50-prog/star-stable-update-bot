@@ -28,7 +28,7 @@ jobs:
 
       - name: Save latest update
         run: |
-          if git diff --quiet -- last_update.txt && git diff --cached --quiet -- last_update.txt; then
+          if [ -z "$(git status --porcelain -- last_update.txt)" ]; then
             echo "No state change to save."
             exit 0
           fi
