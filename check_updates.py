@@ -25,20 +25,34 @@ def clean_text(text):
 
 
 def find_game_updates(html):
-    pattern = re.compile(
-        r'href="([^"]+)"[^>]*>.*?'
-        r'(?:Game Update).*?'
-        r'<h[1-6][^>]*>(.*?)</h[1-6]>',
+    article_pattern = re.compile(
+        r'<a[^>]+href="([^"]*/article/[^"]+)"[^>]*>(.*?)</a>',
         re.IGNORECASE | re.DOTALL
     )
 
     updates = []
 
-    for link, title in pattern.findall(html):
-        title = clean_text(title)
+    for link, content in article_pattern.findall(html):
+        text = clean_text(content)
+
+        if "Game Update" not in text:
+            continue
 
         if link.startswith("/"):
-            link = "https://www.starstable.com" + link
+            link = "https://api.starstable.com" + link
+        elif link.startswith("https://www.starstable.com"):
+            link = link.replace(
+                "https://www.starstable.com",
+                "https://api.starstable.com",
+                1
+            )
+
+        title = re.sub(
+            r"^.*?Game Update\s+(?:[A-Za-z]+\s+\d{1,2},\s+\d{4}\s+)?",
+            "",
+            text,
+            flags=re.IGNORECASE
+        ).strip()
 
         updates.append({
             "title": title,
@@ -46,7 +60,6 @@ def find_game_updates(html):
         })
 
     return updates
-
 
 def load_last_update():
     if not os.path.exists(STATE_FILE):
