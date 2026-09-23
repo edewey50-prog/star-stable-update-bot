@@ -1,1 +1,1 @@
-https://api.starstable.com/article/a-stylish-party
+https://api.starstable.com/article/the-bazaar
